@@ -34,10 +34,10 @@ def serialize(node: Node, treeString="") -> str:
 
 
 def buildNode(childs: [str]) -> Node:
-    rights = [string for string in childs if string.startswith("right")]
-    lefts = [string for string in childs if string.startswith("left")]
+    rights = [string for string in childs[1:] if string.startswith("right")]
+    lefts = [string for string in childs[1:] if string.startswith("left")]
     if(len(childs) > 0):
-        return Node(childs[0], buildNode(childs[1:]))
+        return Node(childs[0], buildNode(lefts), buildNode(rights))
     else:
         return None
 
@@ -46,7 +46,6 @@ def deserialize(nodeString: str) -> Node:
     nodeList = nodeString.split(",")
     rights = [string for string in nodeList[1:] if string.startswith("right")]
     lefts = [string for string in nodeList[1:] if string.startswith("left")]
-    #nodes = [node.split(".") for node in nodeList]
     root = Node(nodeList[0], buildNode(lefts), buildNode(rights))
     return root
     
